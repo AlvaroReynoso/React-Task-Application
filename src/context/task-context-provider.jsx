@@ -1,23 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { TaskContext } from "./task-context";
 import { tareas } from "../data/tasks";
+import { v4 as uuidv4 } from "uuid";
 
 export const TaskContextProvider = ({ children }) => {
   const [tasks, setTasks] = useState([]);
 
-  const createTask = (taskTitle, taskDescription) => {
-    setTasks([
-      ...tasks,
-      {
-        title: taskTitle,
-        description: taskDescription,
-      },
-    ]);
+  const createTask = (title, description) => {
+    const newTask = { id: uuidv4(), title, description };
+    setTasks((prevTasks) => [...prevTasks, newTask]);
   };
 
   const handleDeleteTask = (id) => {
-    const filteredTasks = tasks.filter((task) => task.id !== id);
-    setTasks(filteredTasks);
+    setTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));
   };
 
   useEffect(() => {
